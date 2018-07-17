@@ -22,9 +22,7 @@ let message = "";
 
 //Event listener for entering portal
 enterPortalButton.addEventListener("click", () => {
-  newUser = username.value.replace(/\s+/g, "");
-  console.log(newUser);
-
+  newUser = username.value.trim();
   if (newUser) {
     socket.emit("username", newUser);
     usernameScreen.style.display = "none";
@@ -35,9 +33,9 @@ enterPortalButton.addEventListener("click", () => {
 });
 
 //Event listener for submiting username when enter portal via enter key
-usernameScreen.addEventListener("keydown", e => {
-  newUser = username.value.replace(/\s+/g, "");
-  if (e.keyCode == 13 && !e.shiftKey) {
+usernameScreen.addEventListener("keypress", e => {
+  newUser = username.value.trim();
+  if (!e.shiftKey && e.which === 13) {
     e.preventDefault();
     if (newUser) {
       socket.emit("username", newUser);
@@ -51,28 +49,37 @@ usernameScreen.addEventListener("keydown", e => {
 
 //Event listener for sending a message from chat room
 sendMessageButton.addEventListener("click", () => {
-  message = messageInput.value.replace(/\s+/g, "");
+  message = messageInput.value.trim();
   if (message) {
     socket.emit("newMessage", {
       message: message,
       user: newUser
     });
-  } else messageInput.focus();
+    messageInput.value = "";
+    messageInput.focus();
+  } else {
+    messageInput.focus();
+    messageInput.value = "";
+  }
 });
 
 //Event listener for sending a message via enter key
 
-messageInput.addEventListener("keydown", e => {
-  message = messageInput.value.replace(/\s+/g, "");
-  if (e.keyCode == 13 && !e.shiftKey) {
+messageInput.addEventListener("keypress", e => {
+  if (!e.shiftKey && e.which === 13) {
+    message = messageInput.value.trim();
     e.preventDefault();
     if (message) {
       socket.emit("newMessage", {
         message: message,
         user: newUser
       });
+      messageInput.value = "";
       messageInput.focus();
-    } else messageInput.focus();
+    } else {
+      messageInput.value = "";
+      messageInput.focus();
+    }
   } else messageInput.focus();
 });
 
@@ -89,7 +96,6 @@ messageInput.addEventListener("focusout", () => {
 //Listen for events from server
 socket.on("newMessage", data => {
   feedback.innerHTML = "";
-  messageInput.value = "";
   messageInput.focus();
   output.innerHTML += `<p><strong>${data.user}</strong>: ${data.message}</p>`;
   chat.scrollTop = chat.scrollHeight;
