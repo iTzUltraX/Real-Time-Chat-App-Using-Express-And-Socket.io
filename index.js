@@ -4,7 +4,7 @@ const app = express();
 const server = require("http").Server(app);
 let usersConnected = 0;
 let printName = "";
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3232;
 
 //App setup
 app.use(express.static(__dirname + "./public"));
