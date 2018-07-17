@@ -1,11 +1,13 @@
 const express = require("express");
 const socket = require("socket.io");
+const app = express();
+const server = require("http").Server(app);
 let usersConnected = 0;
 let printName = "";
 
 //App setup
-const app = express();
-const server = app.listen(4000, () => {
+app.use(express.static(__dirname + "./public"));
+server.listen(4000, () => {
   console.log("Listening to request on port 4000...");
 });
 
@@ -13,7 +15,6 @@ const checkNumberOfUsers = () => {
   console.log(`Users connected:${usersConnected} `);
 };
 //Static files
-app.use(express.static("public"));
 
 //Socket setup
 const io = socket(server);
