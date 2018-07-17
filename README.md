@@ -1,4 +1,4 @@
-# Express.js, SocketIO
+# Express.js, Node.js SocketIO
 Real time simple chat application using Express and Socket.io
 
 # Usage
