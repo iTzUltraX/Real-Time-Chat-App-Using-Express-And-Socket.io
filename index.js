@@ -4,10 +4,11 @@ const app = express();
 const server = require("http").Server(app);
 let usersConnected = 0;
 let printName = "";
+const PORT = process.env.PORT;
 
 //App setup
 app.use(express.static(__dirname + "./public"));
-server.listen(4000, () => {
+server.listen(PORT, () => {
   console.log("Listening to request on port 4000...");
 });
 
