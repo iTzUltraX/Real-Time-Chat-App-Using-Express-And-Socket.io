@@ -7,7 +7,7 @@ let printName = "";
 const PORT = process.env.PORT || 3232;
 
 //App setup
-app.use(express.static(__dirname + "public"));
+app.use(express.static("public"));
 server.listen(PORT, () => {
   // console.log("Listening to request on port...");
 });
